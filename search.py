@@ -24,35 +24,6 @@ def get_db_connection():
     return psycopg2.connect(database_url)
 
 
-def init_db():
-    """INITIALIZE DATABASE TABLE IF IT DOESN'T EXIST"""
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS evaluations (
-            id SERIAL PRIMARY KEY,
-            search_id TEXT NOT NULL,
-            query TEXT NOT NULL,
-            mode TEXT NOT NULL,
-            result_url TEXT NOT NULL,
-            result_title TEXT,
-            is_correct BOOLEAN NOT NULL,
-            created_at TIMESTAMP DEFAULT NOW()
-        )
-    """)
-    cur.execute("""
-        CREATE INDEX IF NOT EXISTS idx_search_id ON evaluations(search_id)
-    """)
-    cur.execute("""
-        CREATE INDEX IF NOT EXISTS idx_created_at ON evaluations(created_at)
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
-
-
-# INITIALIZE DATABASE ON STARTUP
-init_db()
 
 
 @app.route("/")
