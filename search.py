@@ -120,6 +120,31 @@ def get_evaluations():
         
         conn = get_db_connection()
         cur = conn.cursor()
+        
+        # GET STATISTICS
+        cur.execute("""
+            SELECT mode, is_correct, COUNT(*) as count
+            FROM evaluations
+            GROUP BY mode, is_correct
+        """)
+        
+        stats_rows = cur.fetchall()
+        statistics = {
+            "agentic": {"correct": 0, "incorrect": 0},
+            "one-shot": {"correct": 0, "incorrect": 0}
+        }
+        
+        for row in stats_rows:
+            mode = row[0]
+            is_correct = row[1]
+            count = row[2]
+            if mode in statistics:
+                if is_correct:
+                    statistics[mode]["correct"] = count
+                else:
+                    statistics[mode]["incorrect"] = count
+        
+        # GET EVALUATIONS
         cur.execute("""
             SELECT id, search_id, query, mode, result_url, result_title, is_correct, created_at
             FROM evaluations
@@ -144,7 +169,10 @@ def get_evaluations():
         cur.close()
         conn.close()
         
-        return jsonify({"evaluations": evaluations})
+        return jsonify({
+            "statistics": statistics,
+            "evaluations": evaluations
+        })
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

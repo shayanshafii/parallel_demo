@@ -216,9 +216,13 @@ async function submitFeedback(searchId, resultUrl, resultTitle, isCorrect, query
 // EVALUATIONS PAGE FUNCTIONALITY
 async function loadEvaluations() {
     const container = document.getElementById('evaluations-container');
+    const statsContainer = document.getElementById('statistics-container');
     if (!container) return;
     
     container.innerHTML = '<p class="loading">Loading evaluations...</p>';
+    if (statsContainer) {
+        statsContainer.innerHTML = '<p class="loading">Loading statistics...</p>';
+    }
     
     try {
         const response = await fetch(`${API_BASE}/api/evaluations`);
@@ -226,6 +230,29 @@ async function loadEvaluations() {
         
         if (!response.ok) {
             throw new Error(data.error || 'Failed to load evaluations');
+        }
+        
+        // DISPLAY STATISTICS
+        if (statsContainer && data.statistics) {
+            const stats = data.statistics;
+            statsContainer.innerHTML = `
+                <div class="statistics-grid">
+                    <div class="stat-item">
+                        <div class="stat-mode">Agentic</div>
+                        <div class="stat-values">
+                            <span>Correct: ${stats.agentic.correct}</span>
+                            <span>Incorrect: ${stats.agentic.incorrect}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-mode">One-Shot</div>
+                        <div class="stat-values">
+                            <span>Correct: ${stats['one-shot'].correct}</span>
+                            <span>Incorrect: ${stats['one-shot'].incorrect}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
         
         const evaluations = data.evaluations || [];
