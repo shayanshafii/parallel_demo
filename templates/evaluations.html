@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluations History - Parallel Search Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Evaluations History</h1>
+            <nav>
+                <a href="/">New Search</a>
+            </nav>
+        </header>
+
+        <main>
+            <div id="message" class="message"></div>
+            
+            <section class="evaluations-section">
+                <h2>Past Evaluations</h2>
+                <div id="evaluations-container">
+                    <p class="loading">Loading evaluations...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        // LOAD EVALUATIONS ON PAGE LOAD
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEvaluations();
+        });
+    </script>
+</body>
+</html>
+

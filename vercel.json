@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "search.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "search.py"
+    }
+  ],
+  "env": {
+    "FLASK_APP": "search.py"
+  }
+}
+

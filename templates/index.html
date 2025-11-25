@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Search Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Parallel Search Feedback</h1>
+            <nav>
+                <a href="/evaluations">View Evaluations</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="search-section">
+                <h2>Search</h2>
+                <form id="search-form">
+                    <div class="form-group">
+                        <label for="objective">Search Objective *</label>
+                        <input type="text" id="objective" name="objective" required placeholder="What are you searching for?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="search_queries">Search Queries (comma-separated, optional)</label>
+                        <input type="text" id="search_queries" name="search_queries" placeholder="query1, query2, query3">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mode">Mode</label>
+                        <select id="mode" name="mode">
+                            <option value="one-shot">One-Shot</option>
+                            <option value="agentic">Agentic</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" id="search-btn">Search</button>
+                </form>
+            </section>
+
+            <div id="message" class="message"></div>
+
+            <section id="results-section" class="results-section" style="display: none;">
+                <h2>Search Results</h2>
+                <div id="results-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
